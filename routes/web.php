@@ -14,3 +14,20 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('user', 'UserController@index');
+
+/*Route::prefix('novel')->namespace('Novel')
+    ->group(function () {
+        # /article
+        Route::name('index')
+            ->get('/', 'NovelController@index');
+        # /article/{num}
+        Route::name('post')
+            ->get('/{id}', 'NovelController@post')
+            ->where('id', '[0-9]+');
+        # /article/comment
+        Route::name('/comment')
+            ->middleware('auth')
+            ->post('comment', 'NovelController@comment');
+    });*/
