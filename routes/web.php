@@ -15,19 +15,21 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('user', 'UserController@index');
-
-/*Route::prefix('novel')->namespace('Novel')
+Route::prefix('user')
     ->group(function () {
-        # /article
-        Route::name('index')
-            ->get('/', 'NovelController@index');
-        # /article/{num}
-        Route::name('post')
-            ->get('/{id}', 'NovelController@post')
-            ->where('id', '[0-9]+');
-        # /article/comment
-        Route::name('/comment')
-            ->middleware('auth')
-            ->post('comment', 'NovelController@comment');
-    });*/
+        Route::get('/index', 'UserController@index')
+            ->name('index');
+
+        Route::get('/create', 'UserController@create')
+            ->name('create');
+
+        Route::get('/edit/{id?}', 'UserController@edit')
+            ->name('edit')
+            ->where('id', '[0-9]*');
+
+        Route::post('/register', 'UserController@register')
+            ->name('register');
+    });
+
+//Route::resource('user', 'UserController');
+

@@ -7,12 +7,19 @@
  */
 namespace App\Models;
 
+use Collective\Html\Eloquent\FormAccessible;
 use Illuminate\Database\Eloquent\Model;
 
 class User extends Model
 {
+    use FormAccessible;
+
     protected $table = 'users';
     public $timestamps = false;
 
-
+    protected $fillable = [
+        'id',
+        'username',
+        'password',
+    ];
 }

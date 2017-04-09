@@ -15,12 +15,19 @@
 
     </head>
     <body>
+        @if (session('message'))
+            <div id="flash" data-value="{{ session('message') }}"></div>
+        @endif
+
         <div class="container">
             <div class="row">
                 @yield('content')
             </div>
         </div>
 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/js/materialize.min.js"></script>
+        {{Html::script('js/common/commonFunction.js')}}
+
     </body>
 </html>

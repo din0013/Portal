@@ -12,6 +12,7 @@
             <th>ID</th>
             <th>UserName</th>
             <th>PASSWORD</th>
+            <th>LINK</th>
         </tr>
     </thead>
     <tbody>
@@ -20,9 +21,12 @@
                 <td> {{ $val -> id }} </td>
                 <td> {{ $val -> username }} </td>
                 <td> {{ $val -> password }} </td>
+                <td> {{Html::linkAction('UserController@edit', 'edit', $val -> id)}} </td>
             </tr>
         @endforeach
     </tbody>
 </table>
+
+{{Html::linkAction('UserController@create', 'Sign in')}}
 
 @endsection
