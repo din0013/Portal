@@ -7,11 +7,18 @@
 @section('content')
 
 {{Form::open(['url' => 'user/register', 'method'=>'post'])}}
+    <div class="form-group">
+        {{Form::label('UserName', 'ユーザ名', ['data-error' => 'wrong', 'data-success' => 'success', 'class' => 'form-control validate'])}}
+        {{Form::text('UserName', isset($results) ? $results -> username : null, ['class' => 'form-control validate', 'required' => 'required', 'aria-required' => 'true'])}}
+        @foreach($errors->get('UserName') as $message)
+            <p class="red-text text-accent-3">{{ $message }}</p>
+        @endforeach
+    </div>
 
     <div class="form-group">
-        {{Form::label('UserName', 'メールアドレス', ['class' => 'form-control'])}}
-        {{Form::text('UserName', old('UserName'), ['class' => 'form-control'])}}
-        @foreach($errors->get('UserName') as $message)
+        {{Form::label('MailAddress', 'メールアドレス', ['data-error' => 'wrong', 'data-success' => 'success', 'class' => 'form-control validate'])}}
+        {{Form::email('MailAddress', isset($results) ? $results -> username : null, ['class' => 'form-control validate', 'required' => 'required', 'aria-required' => 'true'])}}
+        @foreach($errors->get('MailAddress') as $message)
             <p class="red-text text-accent-3">{{ $message }}</p>
         @endforeach
     </div>

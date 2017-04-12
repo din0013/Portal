@@ -9,17 +9,22 @@ namespace App\Models;
 
 use Collective\Html\Eloquent\FormAccessible;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Model
 {
     use FormAccessible;
+    use SoftDeletes;
 
     protected $table = 'users';
-    public $timestamps = false;
+    protected $dates = ['deleted_at'];
+
+    public $timestamps = true;
 
     protected $fillable = [
         'id',
-        'username',
+        'name',
+        'mailaddress',
         'password',
     ];
 }

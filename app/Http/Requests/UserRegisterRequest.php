@@ -22,7 +22,8 @@ class UserRegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'UserName' => 'required|email|max:50|unique:users,username',
+            'UserName' => 'required|max:20|unique:users,name',
+            'MailAddress' => 'required|email|max:50|unique:users,mailaddress',
             'Password'=>'required|min:8|max:20',
             'PasswordConfirm'=>'required|min:8|max:20|same:Password',
         ];
@@ -31,10 +32,13 @@ class UserRegisterRequest extends FormRequest
     public function messages()
     {
         return [
-            'UserName.required' => 'メールアドレスは必須です',
-            'UserName.email' => 'メールアドレスの形式で入力してください',
-            'UserName.max' => 'メールアドレスは50文字以内で入力してください',
-            'UserName.unique' => 'すでに使用されているメールアドレスです',
+            'UserName.required' => 'ユーザ名は必須です',
+            'UserName.max' => 'ユーザ名は20文字以内で入力してください',
+            'UserName.unique' => 'すでに使用されているユーザ名です',
+            'MailAddress.required' => 'メールアドレスは必須です',
+            'MailAddress.email' => 'メールアドレスの形式で入力してください',
+            'MailAddress.max' => 'メールアドレスは50文字以内で入力してください',
+            'MailAddress.unique' => 'すでに使用されているメールアドレスです',
             'Password.required' => 'パスワードは必須です',
             'Password.min' => 'パスワードは8文字以上入力してください',
             'Password.max' => 'パスワードは20文字以内で入力してください',

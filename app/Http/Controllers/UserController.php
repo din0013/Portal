@@ -43,16 +43,24 @@ class UserController extends Controller
 
     public function register(UserRegisterRequest $request)
     {
+        $user =new User;
+
+        $user -> name = $request -> UserName;
+        $user -> mailaddress = $request -> MailAddress;
+        $user -> password = Hash::make($request -> Password);
+
+        $user -> save();
+
         return redirect('user/index')
             -> with('message', '利用者の登録が完了しました!');
     }
 
-    public function delete()
+    public function delete(int $id = 0)
     {
-        $results = User::all();
+        $user = User::find($id);
+        $user -> delete();
 
-        return view('user.delete', [
-            "results" => $results
-        ]);
+        return redirect('user/index')
+        -> with('message', '利用者の削除が完了しました!');
     }
 }

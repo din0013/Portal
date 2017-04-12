@@ -29,6 +29,10 @@ Route::prefix('user')
 
         Route::post('/register', 'UserController@register')
             ->name('register');
+
+        Route::get('/delete/{id?}', 'UserController@delete')
+            ->name('delete')
+            ->where('id', '[0-9]*');
     });
 
 //Route::resource('user', 'UserController');
