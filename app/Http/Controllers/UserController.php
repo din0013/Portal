@@ -28,10 +28,15 @@ class UserController extends Controller
     public function edit(int $id = 0)
     {
         //編集の場合、利用者を検索
-        $results = User::find($id);
+        $user = User::find($id);
+
+        if (empty($user)){
+            return redirect('user/index')
+                -> with('message', '利用者が存在しません');
+        }
 
         return view('user.edit', [
-            "results" => $results
+            "results" => $user
         ]);
     }
 
@@ -61,6 +66,6 @@ class UserController extends Controller
         $user -> delete();
 
         return redirect('user/index')
-        -> with('message', '利用者の削除が完了しました!');
+            -> with('message', '利用者の削除が完了しました!');
     }
 }
