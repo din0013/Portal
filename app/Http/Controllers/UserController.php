@@ -11,33 +11,39 @@ use Hash;
 
 use App\Models\User;
 use App\Http\Requests\UserRegisterRequest;
+use App\Http\Service\UserService;
 
 class UserController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    public function __construct()
+    {
+        $this -> service = new UserService();
+    }
+
     public function index()
     {
-        $results = User::all();
+        $result = $this -> service -> FindAllUser();
 
         return view('user.index', [
-            "results" => $results
+            "results" => $result
         ]);
     }
 
     public function edit(int $id = 0)
     {
         //編集の場合、利用者を検索
-        $user = User::find($id);
+        $result = $this -> service -> FindUserById($id);
 
-        if (empty($user)){
+        if ($result) {
+            return view('user.edit', [
+                "results" => $result
+            ]);
+        } else {
             return redirect('user/index')
                 -> with('message', '利用者が存在しません');
         }
-
-        return view('user.edit', [
-            "results" => $user
-        ]);
     }
 
     public function create()
@@ -48,13 +54,7 @@ class UserController extends Controller
 
     public function register(UserRegisterRequest $request)
     {
-        $user =new User;
-
-        $user -> name = $request -> UserName;
-        $user -> mailaddress = $request -> MailAddress;
-        $user -> password = Hash::make($request -> Password);
-
-        $user -> save();
+        $this -> service -> UserRegister($request);
 
         return redirect('user/index')
             -> with('message', '利用者の登録が完了しました!');
@@ -62,10 +62,14 @@ class UserController extends Controller
 
     public function delete(int $id = 0)
     {
-        $user = User::find($id);
-        $user -> delete();
+        $result = $this -> service -> UserDelete($id);
 
-        return redirect('user/index')
-            -> with('message', '利用者の削除が完了しました!');
+        if ($result) {
+            return redirect('user/index')
+                ->with('message', '利用者の削除が完了しました!');
+        } else {
+            return redirect('user/index')
+                ->with('message', '利用者が存在しません');
+        }
     }
 }
