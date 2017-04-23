@@ -35,5 +35,14 @@ Route::prefix('user')
             ->where('id', '[0-9]*');
     });
 
-//Route::resource('user', 'UserController');
+Route::prefix('auth')
+    ->group(function () {
+        Route::get('/login', 'AuthController@login')
+            ->name('login');
 
+        Route::post('/doLogin', 'AuthController@doLogin')
+            ->name('doLogin');
+
+        Route::get('/logout', 'AuthController@logout')
+            ->name('logout');
+    });
