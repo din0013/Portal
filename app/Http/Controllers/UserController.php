@@ -5,11 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Validator;
 use Redirect;
-use Hash;
 
-use App\Models\User;
 use App\Http\Requests\UserRegisterRequest;
 use App\Http\Service\UserService;
 
