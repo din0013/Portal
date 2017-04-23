@@ -45,4 +45,10 @@ Route::prefix('auth')
 
         Route::get('/logout', 'AuthController@logout')
             ->name('logout');
+
+        Route::get('/twitter', 'AuthController@redirectToProvider')
+            ->name('twitter');
+
+        Route::get('/twitter/callback', 'AuthController@handleProviderCallback')
+            ->name('callback');
     });

@@ -7,11 +7,10 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 use Redirect;
-use Hash;
 use Auth;
+use Socialite;
 
 use App\Http\Requests\LoginRequest;
-use App\Http\Service\UserService;
 
 class AuthController extends Controller
 {
@@ -19,7 +18,6 @@ class AuthController extends Controller
 
     public function __construct()
     {
-        //$this -> service = new UserService();
     }
 
     public function login()
@@ -45,6 +43,42 @@ class AuthController extends Controller
     public function logout()
     {
         Auth::logout();
+
         return redirect('auth.login');
+    }
+
+    public function redirectToProvider()
+    {
+        return Socialite::driver('twitter') -> redirect();
+    }
+
+    /**
+     * Twitterからユーザー情報を取得する
+     *
+     * @return Response
+     */
+    public function handleProviderCallback()
+    {
+        try
+        {
+            $user = Socialite::driver('twitter') -> user();
+        }
+        catch (Exception $ex)
+        {
+            return redirect('auth/twitter');
+        }
+
+        $response =
+            "id: ".$user->id
+            ."<br/>Nickname: ".$user->nickname
+            ."<br/>name: ".$user->name
+            ."<br/>Email: ".$user->email
+            ."<br/>Avater: <img src='".$user->avatar."'>"
+            . "<br/><br/>";
+
+        // OAuth Two Providers
+        $response .= print_r($user, true);
+
+        return $response;
     }
 }

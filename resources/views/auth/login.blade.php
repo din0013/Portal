@@ -6,6 +6,8 @@
 
 @section('content')
 
+{{Html::style('css/social.css') }}
+
 {{Form::open(['url' => 'auth/doLogin', 'method'=>'post'])}}
     <div class="form-group">
         {{Form::label('MailAddress', 'メールアドレス', ['data-error' => 'wrong', 'data-success' => 'success', 'class' => 'form-control validate'])}}
@@ -28,5 +30,9 @@
     {{Form::submit('Submit',['class' => 'btn btn-primary form-control'])}}
 
 {{Form::close()}}
+
+<div class="social">
+    <a href="{{ url('/auth/twitter') }}" class="link twitter" target="_parent"><span class='fa fa-twitter'></span></a>
+</div>
 
 @endsection

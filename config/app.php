@@ -177,6 +177,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,  // 追加
+        Laravel\Socialite\SocialiteServiceProvider::class,
     ],
 
     /*
@@ -228,6 +229,7 @@ return [
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'Form' => Collective\Html\FormFacade::class,  // 追加
         'Html' => Collective\Html\HtmlFacade::class,  // 追加
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class, //追加
     ],
 
 ];
