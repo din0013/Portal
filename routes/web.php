@@ -11,9 +11,27 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {
+//    return view('welcome');
+//});
+
+Route::prefix('auth')
+    ->group(function () {
+        Route::get('/login', 'AuthController@login')
+            ->name('login');
+
+        Route::post('/doLogin', 'AuthController@doLogin')
+            ->name('doLogin');
+
+        Route::get('/logout', 'AuthController@logout')
+            ->name('logout');
+
+        Route::get('/twitter', 'AuthController@redirectToProvider')
+            ->name('twitter');
+
+        Route::get('/twitter/callback', 'AuthController@handleProviderCallback')
+            ->name('callback');
+    });
 
 Route::prefix('user')
     ->group(function () {
@@ -35,20 +53,22 @@ Route::prefix('user')
             ->where('id', '[0-9]*');
     });
 
-Route::prefix('auth')
+Route::prefix('novel')
     ->group(function () {
-        Route::get('/login', 'AuthController@login')
-            ->name('login');
+        Route::get('/index', 'NovelController@index')
+            ->name('index');
 
-        Route::post('/doLogin', 'AuthController@doLogin')
-            ->name('doLogin');
+        Route::get('/create', 'NovelController@create')
+            ->name('create');
 
-        Route::get('/logout', 'AuthController@logout')
-            ->name('logout');
+        Route::get('/edit/{id?}', 'NovelController@edit')
+            ->name('edit')
+            ->where('id', '[0-9]*');
 
-        Route::get('/twitter', 'AuthController@redirectToProvider')
-            ->name('twitter');
+        Route::post('/register', 'NovelController@register')
+            ->name('register');
 
-        Route::get('/twitter/callback', 'AuthController@handleProviderCallback')
-            ->name('callback');
+        Route::get('/delete/{id?}', 'NovelController@delete')
+            ->name('delete')
+            ->where('id', '[0-9]*');
     });

@@ -13,7 +13,7 @@ use App\Models\User;
 
 class UserService extends BaseService
 {
-    public function FindUserById(int $id)
+    public static function FindUserById(int $id)
     {
         try{
             $results = User::find($id);
@@ -30,21 +30,38 @@ class UserService extends BaseService
         }
     }
 
-    public function FindAllUser()
+    public static function FindAllUser()
     {
         $results = User::all();
 
         return $results;
     }
 
-    public function UserRegister(UserRegisterRequest $request)
+//    public static function UserRegister(UserRegisterRequest $request)
+//    {
+//        $user =new User;
+//
+//        try{
+//            $user -> name = $request -> UserName;
+//            $user -> mailaddress = $request -> MailAddress;
+////            $user -> password = Hash::make($request -> Password);
+//            $user -> password = $request -> Password;
+//
+//            $user -> save();
+//        }
+//        catch(Exception $ex)
+//        {
+//            echo $ex;
+//        }
+//    }
+
+    public static function UserRegister($request)
     {
         $user =new User;
 
         try{
-            $user -> name = $request -> UserName;
-            $user -> mailaddress = $request -> MailAddress;
-            $user -> password = Hash::make($request -> Password);
+            $user -> provider_user_id = $request -> token;
+            $user -> provider_access_token = $request -> tokenSecret;
 
             $user -> save();
         }
@@ -54,7 +71,7 @@ class UserService extends BaseService
         }
     }
 
-    public function UserDelete(int $id)
+    public static function UserDelete(int $id)
     {
         try{
             $user = User::find($id);
@@ -70,6 +87,7 @@ class UserService extends BaseService
         catch(Exception $ex)
         {
             echo $ex;
+            return false;
         }
     }
 }

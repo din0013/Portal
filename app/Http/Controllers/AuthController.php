@@ -62,6 +62,8 @@ class AuthController extends Controller
         try
         {
             $user = Socialite::driver('twitter') -> user();
+
+            //利用者登録
         }
         catch (Exception $ex)
         {

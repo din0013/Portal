@@ -7,25 +7,23 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Redirect;
 
-use App\Http\Requests\UserRegisterRequest;
-use App\Http\Service\UserService;
-//use App\Http\Service\TwitterService;
+use App\Http\Requests\NovelMstRegisterRequest;
+use App\Http\Service\NovelService;
 
-class UserController extends Controller
+class NovelController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     public function __construct()
     {
-        $this -> service = new UserService();
-//        $this -> twitter = new TwitterService();
+        $this -> service = new NovelService();
     }
 
     public function index()
     {
-        $result = $this -> service -> FindAllUser();
-//        $this -> twitter -> tweet('Hello World!');
-        return view('user.index', [
+        $result = $this -> service -> FindAllNovel();
+
+        return view('novel.index', [
             "results" => $result
         ]);
     }
@@ -33,41 +31,41 @@ class UserController extends Controller
     public function edit(int $id = 0)
     {
         //編集の場合、利用者を検索
-        $result = $this -> service -> FindUserById($id);
+        $result = $this -> service -> FindNovelById($id);
 
         if ($result) {
-            return view('user.edit', [
+            return view('novel.edit', [
                 "results" => $result
             ]);
         } else {
-            return redirect('user/index')
+            return redirect('novel/index')
                 -> with('message', '利用者が存在しません');
         }
     }
 
     public function create()
     {
-        return view('user.create');
+        return view('novel.edit');
     }
 
 
-    public function register(UserRegisterRequest $request)
+    public function register(NovelMstRegisterRequest $request)
     {
-        $this -> service -> UserRegister($request);
+        $this -> service -> NovelRegister($request);
 
-        return redirect('user/index')
+        return redirect('novel/index')
             -> with('message', '利用者の登録が完了しました!');
     }
 
     public function delete(int $id = 0)
     {
-        $result = $this -> service -> UserDelete($id);
+        $result = $this -> service -> NovelDelete($id);
 
         if ($result) {
-            return redirect('user/index')
+            return redirect('novel/index')
                 ->with('message', '利用者の削除が完了しました!');
         } else {
-            return redirect('user/index')
+            return redirect('novel/index')
                 ->with('message', '利用者が存在しません');
         }
     }

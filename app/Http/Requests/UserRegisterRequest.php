@@ -8,17 +8,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-
-class UserRegisterRequest extends FormRequest
+class UserRegisterRequest extends BaseRequest
 {
-    //protected $redirectRoute = 'get.register';
-
-    public function authorize()
-    {
-        return true;
-    }
-
     public function rules()
     {
         return [
