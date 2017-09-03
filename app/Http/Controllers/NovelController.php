@@ -55,10 +55,9 @@ class NovelController extends Controller
             ]);
     }
 
-//    public function register(NovelMstRegisterRequest $request)
-    public function register($request)
+    public function register(NovelMstRegisterRequest $request)
     {
-        dd($request);
+//        dd($request);
 
 //        //新規登録
 //        if ($request -> id == 0)

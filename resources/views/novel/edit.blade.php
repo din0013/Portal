@@ -34,12 +34,12 @@
         </div>
 
         <div class="input-field">
-            {{Form::select('Writer', $creators, isset($results) ? $results -> Writer : null, ['multiple' => true, 'class' => 'form-control'])}}
+            {{Form::select('Writer[]', $creators, $results -> Writer, ['multiple' => true, 'class' => 'form-control'])}}
             {{Form::label('Writer', '作者')}}
         </div>
 
         <div class="input-field">
-            {{Form::select('Painter', $creators, isset($results) ? $results -> Painter : null, ['multiple' => true, 'class' => 'form-control'])}}
+            {{Form::select('Painter[]', $creators, $results -> Painter, ['multiple' => true, 'class' => 'form-control'])}}
             {{Form::label('Painter', '原画')}}
         </div>
 

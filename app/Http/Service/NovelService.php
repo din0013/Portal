@@ -22,7 +22,18 @@ class NovelService extends BaseService
 
             $novel = NovelMst::findOrFail($id);
             $creators = $novel -> creators;
-//            dd($creators);
+
+            if ($creators != null)
+            {
+                $tmpArray = array();
+
+                foreach ($creators as $creator)
+                {
+                    $tmpArray[] = $creator -> id;
+                }
+                $result -> Writer = $tmpArray;
+                $result -> Painter = $tmpArray;
+            }
 
             $result -> Id = $novel -> id;
             $result -> No = $novel -> no;
@@ -32,21 +43,6 @@ class NovelService extends BaseService
             $result -> Picture = $novel -> asin;
             $result -> Story = $novel -> story;
 
-            if ($creators != null)
-            {
-                foreach ($creators as $creator)
-                {
-                    if ($creator -> property == 1)
-                    {
-                        $result -> Writer = $creator -> id;
-                    }
-                    else if ($creator->property == 2)
-                    {
-                        $result -> Painter = $creator -> id;
-                    }
-                    $result -> property = $creator -> property;
-                }
-            }
 
             return $result;
         }
@@ -86,8 +82,6 @@ class NovelService extends BaseService
     {
         try
         {
-            dd($pRequest);
-
             //IDから小説を更新
             //存在しない場合新規作成
             $novel = NovelMst::updateOrCreate(
@@ -103,94 +97,11 @@ class NovelService extends BaseService
             );
 
             //小説に所属するクリエイターを取得
-//            $creators = $novel -> creators;
-//            $creators = array();
             $writers = $pRequest -> Writer;
-            $painters = $pRequest -> Writer;
+            $painters = $pRequest -> Painter;
             $creators = array_merge($writers, $painters);
 
             $novel -> creators() -> sync($creators);
-
-            //中間テーブルのID用の配列を生成
-//            $creatorIds = array();
-
-//            //クリエイターが存在しない場合
-//            if ($creators -> count() == 0)
-//            {
-//                if ($pRequest -> Writer)
-//                {
-//                    $writer = CreatorMst::firstOrCreate([
-//                        'name' => $pRequest -> Writer,
-//                        'property' => 1,
-//                    ]);
-//                    $creatorIds[] = $writer -> id;
-//                }
-//                if ($pRequest -> Painter)
-//                {
-//                    $painter = CreatorMst::firstOrCreate([
-//                        'name' => $pRequest -> Painter,
-//                        'property' => 2,
-//                    ]);
-//                    $creatorIds[] = $painter -> id;
-//                }
-//            }
-//            //クリエイターが一人存在する場合
-//            else if ($creators -> count() == 2
-//                && ($pRequest -> Painter == null
-//                    || $pRequest -> Writer == null))
-//            {
-//                if($creators ->contains('property', 1))
-//                {
-//                    $writer = CreatorMst::firstOrCreate([
-//                        'name' => $pRequest -> Writer,
-//                        'property' => 1,
-//                    ]);
-//                    $creatorIds[] = $writer -> id;
-//                }
-//                else
-//                {
-//                    $painter = CreatorMst::firstOrCreate([
-//                        'name' => $pRequest -> Painter,
-//                        'property' => 2,
-//                    ]);
-//                    $creatorIds[] = $painter -> id;
-//                }
-//            }
-//            //クリエイターが存在する場合
-//            else
-//            {
-//                foreach ($creators as $creator)
-//                {
-//                    if ($creator -> property == 1)
-//                    {
-//                        if ($pRequest -> Writer == null)
-//                        {
-//                            $creator -> delete();
-//                        }
-//                        else
-//                        {
-//                            $creator -> name = $pRequest -> Writer;
-//                            $creator -> save();
-//                            $creatorIds[] = $creator -> id;
-//                        }
-//                    }
-//                    else if ($creator->property == 2)
-//                    {
-//                        if ($pRequest -> Painter == null)
-//                        {
-//                            $creator -> delete();
-//                        }
-//                        else
-//                        {
-//                            $creator -> name = $pRequest -> Painter;
-//                            $creator -> save();
-//                            $creatorIds[] = $creator -> id;
-//                        }
-//                    }
-//                }
-//            }
-
-
         }
         catch(Exception $ex)
         {
