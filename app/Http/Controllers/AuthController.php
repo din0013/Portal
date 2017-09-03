@@ -6,9 +6,11 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
+use Illuminate\Support\Facades\Session;
 use Redirect;
 use Auth;
 use Socialite;
+use Cookie;
 
 use App\Http\Requests\LoginRequest;
 
@@ -31,10 +33,13 @@ class AuthController extends Controller
             ['mailaddress' => $request -> MailAddress,
                 'password' => $request -> Password,
                 'deleted_at' => null,
-            ])) {
+            ]))
+        {
             return redirect('user/index')
                 -> with('message', 'ログインしました');
-        } else {
+        }
+        else
+        {
             return Redirect::back()->withInput()
                 -> with('message', 'ログインに失敗しました');
         }
@@ -62,25 +67,39 @@ class AuthController extends Controller
         try
         {
             $user = Socialite::driver('twitter') -> user();
-
-            //利用者登録
         }
         catch (Exception $ex)
         {
             return redirect('auth/twitter');
         }
 
-        $response =
-            "id: ".$user->id
-            ."<br/>Nickname: ".$user->nickname
-            ."<br/>name: ".$user->name
-            ."<br/>Email: ".$user->email
-            ."<br/>Avater: <img src='".$user->avatar."'>"
-            . "<br/><br/>";
+        $token = [
+            'oauth_token' => $user -> token,
+            'oauth_token_secret' => $user -> tokenSecret,
+        ];
 
-        // OAuth Two Providers
-        $response .= print_r($user, true);
+        $userInfo = [
+            'id' => $user->id,
+            'name' => $user->nickname,
+            'avater' => $user->avatar,
+        ];
 
-        return $response;
+        Session::put('access_token', $token);
+        $minutes = time() + 7 * 24 * 3600;
+
+        Cookie::queue('counter', $userInfo, $minutes);
+        return redirect('user.index');
+//        $response =
+//            "id: ".$user->id
+//            ."<br/>Nickname: ".$user->nickname
+//            ."<br/>name: ".$user->name
+//            ."<br/>Email: ".$user->email
+//            ."<br/>Avater: <img src='".$user->avatar."'>"
+//            . "<br/><br/>";
+//
+//        // OAuth Two Providers
+//        $response .= print_r($user, true);
+//
+//        return $response;
     }
 }

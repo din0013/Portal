@@ -13,10 +13,12 @@ class NovelMstRegisterRequest extends BaseRequest
     public function rules()
     {
         return [
+            'Id' => '',
             'Title' => 'required|max:100',
             'No' => 'required|max:999|integer',
-            'Writer' => 'required|max:50',
-            'Painter' => 'max:50',
+            'Writer' => 'required',
+//            'Writer' => 'required|max:50',
+//            'Painter' => 'max:50',
             'Picture' => 'required|max:50',
             'ReleaseDate' => 'required|date_format:"Y-m-d"',
             'Story' => 'max:10000',
@@ -31,9 +33,9 @@ class NovelMstRegisterRequest extends BaseRequest
             'No.required' => '巻数は必須です',
             'No.max' => '巻数は999以内で入力してください',
             'No.integer' => '巻数は数字で入力してください',
-            'Writer.required' => 'ユーザ名は必須です',
-            'Writer.max' => 'ユーザ名は20文字以内で入力してください',
-            'Painter.max' => 'ユーザ名は20文字以内で入力してください',
+//            'Writer.required' => 'ユーザ名は必須です',
+//            'Writer.max' => 'ユーザ名は20文字以内で入力してください',
+//            'Painter.max' => 'ユーザ名は20文字以内で入力してください',
             'Picture.required' => '画像URL or ASINは必須です',
             'Picture.max' => '画像URL or ASINは100文字以内で入力してください',
             'ReleaseDate.required' => '発売日は必須です',

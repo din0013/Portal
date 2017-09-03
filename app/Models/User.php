@@ -11,23 +11,23 @@ use Collective\Html\Eloquent\FormAccessible;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class User extends Model
+class User extends BaseModel
 {
-    use FormAccessible;
-    use SoftDeletes;
+    //use FormAccessible;
+    //use SoftDeletes;
 
     protected $table = 'users';
     protected $dates = ['deleted_at'];
 
-    public $timestamps = true;
+    //public $timestamps = true;
 
-    public function set_password($password){
-        $this->set_attribute('password',Hash::make($password));
+    public function set_password($password)
+    {
+        $this->set_attribute('password', Hash::make($password));
     }
 
-
     protected $fillable = [
-        'id',
+        //'id',
         'name',
         'mailaddress',
         'password',

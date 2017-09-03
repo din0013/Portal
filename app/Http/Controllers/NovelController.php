@@ -33,9 +33,12 @@ class NovelController extends Controller
         //編集の場合、利用者を検索
         $result = $this -> service -> FindNovelById($id);
 
+        $creators = $this -> service -> GetCreatorsList();
+
         if ($result) {
             return view('novel.edit', [
-                "results" => $result
+                "results" => $result,
+                "creators" => $creators,
             ]);
         } else {
             return redirect('novel/index')
@@ -45,16 +48,33 @@ class NovelController extends Controller
 
     public function create()
     {
-        return view('novel.edit');
+        $creators = $this -> service -> GetCreatorsList();
+
+        return view('novel.edit', [
+                "creators" => $creators,
+            ]);
     }
 
-
-    public function register(NovelMstRegisterRequest $request)
+//    public function register(NovelMstRegisterRequest $request)
+    public function register($request)
     {
-        $this -> service -> NovelRegister($request);
+        dd($request);
+
+//        //新規登録
+//        if ($request -> id == 0)
+//        {
+            $this -> service -> NovelRegister($request);
+//        }
+//        //編集
+//        else
+//        {
+//            $this -> service -> NovelEdit($request);
+//        }
+
+        $title = $request -> Title;
 
         return redirect('novel/index')
-            -> with('message', '利用者の登録が完了しました!');
+            -> with('message', $title + 'の登録が完了しました!');
     }
 
     public function delete(int $id = 0)

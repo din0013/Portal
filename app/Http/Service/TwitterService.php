@@ -7,12 +7,25 @@
  */
 namespace App\Http\Service;
 
+use Mockery\CountValidator\Exception;
 use Twitter;
+use Session;
 
 class TwitterService
 {
     public static function tweet(string $contents)
     {
-        Twitter::postTweet(['status' => $contents, 'format' => 'json']);
+        try
+        {
+            if(Session::has('auth'))
+            {
+                throw Exception;
+            }
+            Twitter::postTweet(['status' => $contents, 'format' => 'json']);
+        }
+        catch(Exception $e)
+        {
+            throw $e;
+        }
     }
 }

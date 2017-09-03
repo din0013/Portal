@@ -2,23 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Redirect;
+//use Illuminate\Foundation\Bus\DispatchesJobs;
+//use Illuminate\Foundation\Validation\ValidatesRequests;
+//use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+//use Redirect;
 
 use App\Http\Requests\UserRegisterRequest;
 use App\Http\Service\UserService;
-//use App\Http\Service\TwitterService;
 
-class UserController extends Controller
+class UserController extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+//    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     public function __construct()
     {
         $this -> service = new UserService();
-//        $this -> twitter = new TwitterService();
     }
 
     public function index()

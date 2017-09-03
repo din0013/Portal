@@ -19,4 +19,10 @@ class NovelMst extends BaseModel
         'asin',
         'story',
     ];
+
+    public function creators()
+    {
+//        return $this->belongsToMany('App\Models\CreatorMst') -> withTimestamps();
+        return $this->morphToMany('App\Models\CreatorMst', 'creatorable') -> withTimestamps();
+    }
 }
