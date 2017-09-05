@@ -22,17 +22,25 @@ class NovelService extends BaseService
 
             $novel = NovelMst::findOrFail($id);
             $creators = $novel -> creators;
-
             if ($creators != null)
             {
-                $tmpArray = array();
+                $writer = array();
+                $painter = array();
 
                 foreach ($creators as $creator)
                 {
-                    $tmpArray[] = $creator -> id;
+                    if ($creator -> pivot -> role == 1)
+                    {
+                        $writer[] = $creator -> id;
+                    }
+                    else if ($creator -> pivot -> role == 2)
+                    {
+                        $painter[] = $creator -> id;
+                    }
                 }
-                $result -> Writer = $tmpArray;
-                $result -> Painter = $tmpArray;
+
+                $result -> Writer = $writer;
+                $result -> Painter = $painter;
             }
 
             $result -> Id = $novel -> id;
@@ -42,7 +50,6 @@ class NovelService extends BaseService
             $result -> ReleaseDate = $novel -> release_date;
             $result -> Picture = $novel -> asin;
             $result -> Story = $novel -> story;
-
 
             return $result;
         }
@@ -97,9 +104,23 @@ class NovelService extends BaseService
             );
 
             //小説に所属するクリエイターを取得
-            $writers = $pRequest -> Writer;
-            $painters = $pRequest -> Painter;
-            $creators = array_merge($writers, $painters);
+            $writers = [];
+            $painters = [];
+
+            foreach ($pRequest -> Writer as $id)
+            {
+                $writers[$id] = ['role' => 1];
+            }
+
+            if($pRequest -> Painter)
+            {
+                foreach ($pRequest -> Painter as $id)
+                {
+                    $painters[$id] = ['role' => 2];
+                }
+            }
+            $creators = $writers + $painters;
+//            dd($creators);
 
             $novel -> creators() -> sync($creators);
         }
@@ -113,7 +134,7 @@ class NovelService extends BaseService
     {
         try
         {
-            $model = NovelMst::find($id);
+            $model = NovelMst::findOrFail($id);
 
             if (empty($model))
             {
@@ -121,6 +142,8 @@ class NovelService extends BaseService
             }
             else
             {
+                $model -> creators() -> detach();
+
                 $model->delete();
 
                 return true;

@@ -42,15 +42,17 @@ class NovelController extends Controller
             ]);
         } else {
             return redirect('novel/index')
-                -> with('message', '利用者が存在しません');
+                -> with('message', '小説が存在しません');
         }
     }
 
     public function create()
     {
+        $result = null;
         $creators = $this -> service -> GetCreatorsList();
 
         return view('novel.edit', [
+                "results" => $result,
                 "creators" => $creators,
             ]);
     }
@@ -82,10 +84,10 @@ class NovelController extends Controller
 
         if ($result) {
             return redirect('novel/index')
-                ->with('message', '利用者の削除が完了しました!');
+                ->with('message', '小説の削除が完了しました!');
         } else {
             return redirect('novel/index')
-                ->with('message', '利用者が存在しません');
+                ->with('message', '小説が存在しません');
         }
     }
 }
